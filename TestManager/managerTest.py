@@ -10,8 +10,9 @@ import time, os
 from selenium import common, webdriver
 import HTMLTestRunner
 import unittest
-# from .readConfig import Read
 import readConfig
+# opts = webdriver.ChromeOptions
+# opts.binary_location='C:\\Users\\lenovo\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe'
 
 
 class TestManager(unittest.TestCase):
