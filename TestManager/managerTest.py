@@ -21,7 +21,7 @@ class TestManager(unittest.TestCase):
 
     def setUp(self):
         self.r1 = readConfig.Read()
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Chrome('./chromedriver.exe')
         self.driver.maximize_window()
 
     def tearDown(self):
