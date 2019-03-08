@@ -43,7 +43,7 @@ class TestManager(unittest.TestCase):
         try:
             passw = self.driver.find_element_by_xpath("//*[@id=\"section\"]/div/div[2]/form/div[2]/div/div/input")
             passw.clear()
-            time.sleep(5)
+            time.sleep(3)
             passw.send_keys(password)
         except common.exceptions.NoSuchElementException as e:
             raise e
@@ -72,7 +72,7 @@ class TestManager(unittest.TestCase):
         try:
             passw = self.driver.find_element_by_xpath("//*[@id=\"section\"]/div/div[2]/form/div[2]/div/div/input")
             passw.clear()
-            time.sleep(5)
+            time.sleep(3)
             passw.send_keys(password)
         except common.exceptions.NoSuchElementException as e:
             raise e
@@ -100,6 +100,7 @@ class TestManager(unittest.TestCase):
         try:
             passw = self.driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/form/div[3]/div/div/div/input")
             passw.clear()
+            time.sleep(3)
             passw.send_keys(password)
         except common.exceptions.NoSuchElementException as e:
             raise e
@@ -131,6 +132,7 @@ class TestManager(unittest.TestCase):
         try:
             passw = self.driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div/div/form/div[3]/div/div/div/input")
             passw.clear()
+            time.sleep(3)
             passw.send_keys(password)
         except common.exceptions.NoSuchElementException as e:
             raise e
