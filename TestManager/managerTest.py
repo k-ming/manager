@@ -6,7 +6,7 @@
    date：          2019/3/7
 -------------------------------------------------
 """
-import time, os
+import time, os ,sys
 from selenium import common, webdriver
 import HTMLTestRunner
 import unittest
@@ -152,6 +152,7 @@ class TestManager(unittest.TestCase):
 
 if __name__ == '__main__':
 
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
     #创建测试套件
     suite = unittest.TestSuite()
     suite.addTest(TestManager('testTest_Robot'))
