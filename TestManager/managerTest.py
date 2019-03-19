@@ -158,9 +158,9 @@ if __name__ == '__main__':
     #创建测试套件
     suite = unittest.TestSuite()
     suite.addTest(TestManager('testTest_Robot'))
-    suite.addTest(TestManager('testPro_Robot'))
-    suite.addTest(TestManager('testTest_holo'))
-    suite.addTest(TestManager('testPro_holo'))
+    # suite.addTest(TestManager('testPro_Robot'))
+    # suite.addTest(TestManager('testTest_holo'))
+    # suite.addTest(TestManager('testPro_holo'))
 
     # 创建运行器
     now_time = time.strftime("%Y%m%d%H%M%S", time.localtime())
