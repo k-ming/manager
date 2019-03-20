@@ -30,9 +30,9 @@ class TestManager(unittest.TestCase):
 
     def testPro_Robot(self):
         self.driver.get(self.r1.getRobotInfo("pro_url"))
+        self.driver.implicitly_wait(10)
         username = self.r1.getRobotInfo("pro_user")
         password = self.r1.getRobotInfo("pro_pass")
-        self.driver.implicitly_wait(3)
 
         try:
             user = self.driver.find_element_by_xpath("//*[@id=\"section\"]/div/div[2]/form/div[1]/div/div/input")
@@ -59,9 +59,9 @@ class TestManager(unittest.TestCase):
 
     def testTest_Robot(self):
         self.driver.get(self.r1.getRobotInfo("test_url"))
+        self.driver.implicitly_wait(10)
         username = self.r1.getRobotInfo("test_user")
         password = self.r1.getRobotInfo("test_pass")
-        self.driver.implicitly_wait(3)
 
         try:
             user = self.driver.find_element_by_xpath("//*[@id=\"section\"]/div/div[2]/form/div[1]/div/div/input")
@@ -87,7 +87,7 @@ class TestManager(unittest.TestCase):
 
     def testTest_holo(self):
         self.driver.get(self.r1.getHoloInfo("test_url"))
-        self.driver.implicitly_wait(3)
+        self.driver.implicitly_wait(10)
         self.driver.maximize_window()
         username = self.r1.getHoloInfo("test_user")
         password  = self.r1.getHoloInfo("test_pass")
@@ -119,7 +119,7 @@ class TestManager(unittest.TestCase):
 
     def testPro_holo(self):
         self.driver.get(self.r1.getHoloInfo("pro_url"))
-        self.driver.implicitly_wait(3)
+        self.driver.implicitly_wait(10)
         self.driver.maximize_window()
         username = self.r1.getHoloInfo("pro_user")
         password = self.r1.getHoloInfo("pro_pass")
@@ -158,9 +158,9 @@ if __name__ == '__main__':
     #创建测试套件
     suite = unittest.TestSuite()
     suite.addTest(TestManager('testTest_Robot'))
-    # suite.addTest(TestManager('testPro_Robot'))
-    # suite.addTest(TestManager('testTest_holo'))
-    # suite.addTest(TestManager('testPro_holo'))
+    suite.addTest(TestManager('testPro_Robot'))
+    suite.addTest(TestManager('testTest_holo'))
+    suite.addTest(TestManager('testPro_holo'))
 
     # 创建运行器
     now_time = time.strftime("%Y%m%d%H%M%S", time.localtime())
