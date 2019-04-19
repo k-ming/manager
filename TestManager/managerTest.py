@@ -113,7 +113,7 @@ class TestManager(unittest.TestCase):
         except common.exceptions.NoSuchElementException as e:
             raise e
         try:
-            self.assertEqual('作品管理', self.driver.find_element_by_xpath("/html/body/div[1]/div/div/div[2]/div[1]/div/div[1]/a").text)
+            self.assertEqual('作品管理', self.driver.find_element_by_xpath("/html/body/div/div/div/div[2]/div[1]/div/div[1]/a").text)
         except common.exceptions.NoSuchElementException as e:
             raise e
 
@@ -157,9 +157,9 @@ if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     #创建测试套件
     suite = unittest.TestSuite()
-    suite.addTest(TestManager('testTest_Robot'))
-    suite.addTest(TestManager('testPro_Robot'))
-    suite.addTest(TestManager('testTest_holo'))
+    # suite.addTest(TestManager('testTest_Robot'))
+    # suite.addTest(TestManager('testPro_Robot'))
+    # suite.addTest(TestManager('testTest_holo'))
     suite.addTest(TestManager('testPro_holo'))
 
     # 创建运行器
