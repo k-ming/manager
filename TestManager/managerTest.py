@@ -7,7 +7,6 @@
 -------------------------------------------------
 """
 import time, os
-from selenium import common, webdriver
 import HTMLTestRunner
 import unittest
 import InitDriver, QuitDriver
