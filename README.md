@@ -20,7 +20,7 @@
 |[attribute]|[target]|选择带有target属性的所有元素|2|
 |[attribute=vulue]|[target=_blank]|选择target="_blank"的所有元素|2|
 |[attribute~=vulue]|title~=flower|选择title属性包含"flower"的所有元素|2|
-|[attribute|=vulue]|[lang|=en]|选择lang属性值以"en"开头的所有元素|2|
+|[attribute|=vulue]|[lang\|=en]|选择lang属性值以"en"开头的所有元素|2|
 |:link| a:link|选择所有未被访问的链接|1|
 |:visited| a:visited|选择所有已被访问的链接|1|
 |:active| a:active|选择活动链接|1|
