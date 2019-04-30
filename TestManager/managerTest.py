@@ -7,7 +7,7 @@
 -------------------------------------------------
 """
 import time, os
-import HTMLTestRunner
+import HTMLTestRunner_cn
 import unittest
 import InitDriver, QuitDriver
 import TestRobot, ProRobot, TestHolo, ProHolo
@@ -45,13 +45,13 @@ if __name__ == '__main__':
     # suite.addTest(TestManager('testTestRobot'))
     suite.addTest(TestManager('testProRobot'))
     # suite.addTest(TestManager('testTestHolo'))
-    suite.addTest(TestManager('testProHolo'))
+    # suite.addTest(TestManager('testProHolo'))
 
     # 创建运行器
     now_time = time.strftime("%Y%m%d%H%M%S", time.localtime())
     filename = "管理后台回归测试" + "_Test_" + now_time + ".html"
     fp = open(filename, 'wb+')
-    runner = HTMLTestRunner.HTMLTestRunner(
+    runner = HTMLTestRunner_cn.HTMLTestRunner(
         stream=fp,
         title='管理后台回归测试报告',
         description='全息、机器人管理后台回归测试')
