@@ -47,6 +47,7 @@ class RobotFace(InitDriver.Driver, unittest.TestCase):
                 '''完成'''
                 self.driver.find_element_by_css_selector(
                     'div.card-box li:nth-child(6)>div>div>div:nth-child(3)>div>span:nth-child(2)>button').click()
+                print('添加人脸成功!')
                 time.sleep(3)
         except NoSuchElementException as e:
             raise e
