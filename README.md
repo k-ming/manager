@@ -125,7 +125,7 @@
 
 ## 项目讲解
 #### 一 项目目录   
-![项目目录]()  
+![项目目录](https://github.com/ming-zh/yunshen/blob/dev/TestManager/imgs/dir.jpg)  
 `cases` 测试用例目录  
 `config` 配置文件目录  
 `imgs` readme.md文件使用的图片  
