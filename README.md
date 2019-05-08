@@ -5,6 +5,7 @@
 #### 一、定位遇到的问题:
     1、Element is visible 使用xpath定位，其中用@class属性来定位，也会报这个错误（特别是class中含有复合类的定位）
     2、用selenium做自动化，有时候会遇到需要模拟鼠标操作才能进行的情况，比如单击、双击、点击鼠标右键、拖拽等等。而selenium给我们提供了一个类来处理这类事件——ActionChains
+    3、message 消息定位，message消息通常出现时间只有几秒，所以在使用chrome浏览器调试的时候，当出现message弹窗时候，按F8暂停，copy下来xpath
 #### 二、xpath、css定位比较
 ##### 1、css选择器匹配规则
 |选择器|示例|描述|支持的css版本|
@@ -121,3 +122,266 @@
 
 `注意：根据兄弟元素定位时只能从上面的兄弟找下面的兄弟，如：css=p+li，写成li+p是不行的。`<br>
 `可以看到，CSS定位语法比XPath更为简洁、灵活，而且CSS定位的速度还比XPath快，推荐使用CSS定位.`
+
+## 项目讲解
+#### 一 项目目录   
+![项目目录]()  
+`cases` 测试用例目录  
+`config` 配置文件目录  
+`imgs` readme.md文件使用的图片  
+`utils`  工具类目录  
+`TestManager` 根目录,InitDriver.py初始化driver类,chromedriver.exe驱动,managerTest.py 主类, QuitDriver 退出dirver类  
+#### 二 文件解读
+InitDriver.py初始化driver类
+```python 
+# -*- coding: utf-8 -*-
+"""
+-------------------------------------------------
+   File Name：     InitDriver
+   Author :       lenovo
+   date：          2019/4/26
+-------------------------------------------------
+"""
+from selenium import webdriver
+
+class Driver():
+    def getDriver(self):
+        self.driver = webdriver.Chrome('./chromedriver.exe') #初始化driver,传入驱动
+        self.driver.maximize_window()
+
+```
+QuitDriver 退出dirver类   
+```python
+# -*- coding: utf-8 -*-
+"""
+-------------------------------------------------
+   File Name：     QuitDriver
+   Author :       lenovo
+   date：          2019/4/26
+-------------------------------------------------
+"""
+import InitDriver
+
+class Quit(InitDriver.Driver): #继承初始化类,获取driver,执行quit()方法,关闭driver
+    def quit(self):
+        self.driver.quit()
+```
+managerTest.py 主类,测试用例组装与执行
+```python
+# -*- coding: utf-8 -*-
+"""
+-------------------------------------------------
+   File Name：     managerTest
+   Author :       lenovo
+   date：          2019/3/7
+-------------------------------------------------
+"""
+import time, os
+from utils import HTMLTestRunner_cn
+import unittest
+import InitDriver, QuitDriver
+'''导入机器人测试用例'''
+from cases import  RobotLogin,  AddRobot, RobotFace
+'''导入全息测试用例'''
+from cases import HoloLogin
+
+
+class TestManager(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(self):
+        InitDriver.Driver.getDriver(self)
+
+    @classmethod
+    def tearDownClass(self):
+        QuitDriver.Quit.quit(self)
+
+
+    def testRobotLogin(self):
+        RobotLogin.RobotLogin.robotLogin(self)
+
+    def testAddRobot(self):
+        AddRobot.AddRobot.addRobot(self)
+
+    def testRobotFace(self):
+        RobotFace.RobotFace.robotFace(self)
+
+    def testHoloLogin(self):
+        HoloLogin.HoloLogin.holoLogin(self)
+
+
+
+if __name__ == '__main__':
+
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+    '''创建测试套件, 此处一定要控制用例执行顺序,tesRobotLogin必须首先执行,否则后面的用例会报错,找不到元素,并且unittest.main()方法执行用例是按照用例字母的顺序来执行的'''
+    suite = unittest.TestSuite()
+    suite.addTest(TestManager('testRobotLogin'))
+    suite.addTest(TestManager('testAddRobot'))
+    suite.addTest(TestManager('testRobotFace'))
+    suite.addTest(TestManager('testHoloLogin'))
+
+
+    # 创建运行器, 并生成测试报告
+    now_time = time.strftime("%Y%m%d%H%M%S", time.localtime())
+    filename = "管理后台回归测试" + "_Test_" + now_time + ".html"
+    fp = open(filename, 'wb+')
+    runner = HTMLTestRunner_cn.HTMLTestRunner(
+        stream=fp,
+        title='管理后台回归测试报告',
+        description='全息、机器人管理后台回归测试')
+    runner.run(suite)
+    fp.close()
+
+    '''调试的时候可以用下面的方法执行,便于打印log'''
+    # runer = unittest.TextTestRunner()
+    # runer.run(suite)
+```
+utils中除了HTMLTestRunner.py,还有一个读取配置的类 readConfig.py
+```python
+# -*- coding: utf-8 -*-
+"""
+-------------------------------------------------
+   File Name：     readConfig
+   Author :       lenovo
+   date：          2019/3/7
+-------------------------------------------------
+"""
+import os
+import configparser, codecs
+
+# pd = os.path.split(os.path.realpath(__file__))[0]
+'''os.path.split(os.path.realpath(__file__))[0]是获取当前文件路径,os.path.pardir是获取父目录,将他们组合起来就获取到了上层目录'''
+pd = os.path.join(os.path.split(os.path.realpath(__file__))[0], os.path.pardir)
+'''再组合成完整的配置文件目录'''
+cp = os.path.join(pd, "config\cfg.ini") 
+
+
+class Read():
+    def __init__(self):
+        fd = open(cp)
+        data = fd.read()
+
+        #  使用codecs模块进行文件操作及消除文件中的BOM
+        if data[:3] == codecs.BOM_UTF8:
+            data = data[3:]
+            file = codecs.open(cp, "w")
+            file.write(data)
+            file.close()
+        fd.close()
+
+        self.cf = configparser.ConfigParser()
+        self.cf.read(cp)
+
+    def getRobotInfo(self,name):
+        value = self.cf.get("ROBOT", name)
+        return value
+
+    def getHoloInfo(self,name):
+        value = self.cf.get("HOLO", name)
+        return value
+
+    def getMediaInfo(self,name):
+        value = self.cf.get("MEDIA", name)
+        return value
+
+
+# if __name__ == '__main__':
+#     R1 = Read()
+#     pro_url  = R1.getHoloInfo("pro_url")
+#     print(pro_url)
+```
+配置文件 cfg.ini
+```python
+[HOLO]  # 全息正式测试环境地址,用户名,密码
+pro_url = http://web.holo.aiyunshen.com/#/vr/workManagement
+pro_user = admin
+pro_pass = ys2018
+test_url = http://10.11.23.138
+test_user = admin
+test_pass = ys2018
+
+
+[ROBOT] # 机器人正式测试环境地址,用户名,密码
+pro_url = http://op.robot.aiyunshen.com/info/list
+pro_user = admin
+pro_pass = admin123456
+test_url = http://10.11.23.137
+test_user = admin
+test_pass = admin123456
+
+[MEDIA]
+dev_url = http://media-api.dev.rs.com
+
+```
+登陆机器人管理后台类
+```python
+# -*- coding: utf-8 -*-
+"""
+-------------------------------------------------
+   File Name：     ProRobot
+   Author :       lenovo
+   date：          2019/4/26
+-------------------------------------------------
+"""
+
+import InitDriver
+from utils import readConfig
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+
+'''此处需要继承初始化driver类获得driver,后面的用例类似,只要获得到driver就可以进行测试,但是一定要注意,先执行login类打开页面,否则后面的用例无法进行'''
+class RobotLogin(InitDriver.Driver, readConfig.Read): 
+    '''读取配置文件中的url,用户名和密码,进行登陆操作'''
+    def robotLogin(self):
+        self.r1 = readConfig.Read()
+        self.driver.get(self.r1.getRobotInfo("pro_url"))
+        self.driver.implicitly_wait(10)
+        username = self.r1.getRobotInfo("pro_user")
+        password = self.r1.getRobotInfo("pro_pass")
+
+        '''测试登陆'''
+        try:
+            user = self.driver.find_element_by_xpath("//*[@id=\"section\"]/div/div[2]/form/div[1]/div/div/input")
+            user.clear()
+            user.send_keys(username)
+        except NoSuchElementException as e:
+            raise e
+        try:
+            passw = self.driver.find_element_by_xpath("//*[@id=\"section\"]/div/div[2]/form/div[2]/div/div/input")
+            passw.clear()
+            time.sleep(3)
+            passw.send_keys(password)
+        except NoSuchElementException as e:
+            raise e
+        try:
+            self.driver.find_element_by_class_name("el-button").click()
+        except NoSuchElementException as e:
+            raise e
+
+        '''检测页面元素,如果检查的元素存在,则说明登陆成功,否则登陆失败'''
+        try:
+            self.assertEqual('信息管理', self.driver.find_element_by_xpath("//*[@id=\"app\"]/div/div[1]/div[2]/div[1]/div/ul/div[1]/a/li/span").text)
+            print('机器人管理后台登陆成功')
+        except NoSuchElementException as e:
+            raise e
+
+        '''选择商场'''
+        try:
+            choose = self.driver.find_element_by_xpath('//input[@placeholder="请选择商场"]')
+            ActionChains(self.driver).click(choose).perform()
+            time.sleep(3)
+        except NoSuchElementException as e:
+            raise e
+        try:
+            self.driver.find_element_by_xpath('/html/body/div[2]/div[1]/div[1]/ul/li[2]/span').click()
+            '''Element is visible 使用xpath定位，其中用@class属性来定位，也会报这个错误（特别是class中含有复合类的定位）'''
+            time.sleep(2)
+        except NoSuchElementException as e:
+            raise e
+
+
+
+
+```
