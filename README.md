@@ -129,7 +129,7 @@
 `cases` 测试用例目录  
 `config` 配置文件目录  
 `imgs` readme.md文件使用的图片  
-`utils`  工具类目录  
+`utils`  工具类目录,包含了读取配置文件类,和HTMLTestRunner中英版本
 `TestManager` 根目录,InitDriver.py初始化driver类,chromedriver.exe驱动,managerTest.py 主类, QuitDriver 退出dirver类  
 #### 二 文件解读
 InitDriver.py初始化driver类
