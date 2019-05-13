@@ -47,7 +47,7 @@ class AddRobot(InitDriver.Driver, unittest.TestCase):
             '''选择楼层'''
             self.driver.find_element_by_css_selector("form div:nth-child(3) input:nth-child(1)").click()
             time.sleep(2)
-            self.driver.find_element_by_xpath("//body/div[5]/div[1]/div[1]/ul/li[3]").click()
+            self.driver.find_element_by_xpath("//body/div[5]/div[1]/div[1]/ul/li[1]").click()
             time.sleep(2)
             '''选择充电桩'''
             self.driver.find_element_by_xpath("//form/div[3]/div[2]/div[1]/div[1]/div[1]/div[1]/input[1]").click()
