@@ -51,8 +51,8 @@ if __name__ == '__main__':
     suite.addTest(TestManager('testRobotLogin'))
     suite.addTest(TestManager('testAddRobot'))
     suite.addTest(TestManager('testRobotFace'))
-    suite.addTest(TestManager('testHoloLogin'))
-    suite.addTest(TestManager('testHoloLeftMenu'))
+    # suite.addTest(TestManager('testHoloLogin'))
+    # suite.addTest(TestManager('testHoloLeftMenu'))
 
 
     # 创建运行器, 并生成测试报告

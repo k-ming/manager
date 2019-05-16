@@ -12,9 +12,10 @@ from utils import readConfig
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 import time
+import unittest
 
 
-class RobotLogin(InitDriver.Driver, readConfig.Read):
+class RobotLogin(InitDriver.Driver, readConfig.Read, unittest.TestCase):
 
     def robotLogin(self):
         self.r1 = readConfig.Read()
@@ -56,10 +57,20 @@ class RobotLogin(InitDriver.Driver, readConfig.Read):
             time.sleep(3)
         except NoSuchElementException as e:
             raise e
+
         try:
-            self.driver.find_element_by_xpath('/html/body/div[2]/div[1]/div[1]/ul/li[2]/span').click()
+            # self.driver.find_element_by_xpath('/html/body/div[2]/div[1]/div[1]/ul/li[2]/span').click()
             '''Element is visible 使用xpath定位，其中用@class属性来定位，也会报这个错误（特别是class中含有复合类的定位）'''
-            time.sleep(2)
+
+            eles = self.driver.find_elements_by_xpath('/html/body/div[2]/div[1]/div[1]/ul/li')
+            for i in eles:
+                if (i.text == u'爱琴海购物公园'):
+                    print(i.text)
+                    i.click()
+                    time.sleep(2)
+                else: pass
+
+
         except NoSuchElementException as e:
             raise e
 
