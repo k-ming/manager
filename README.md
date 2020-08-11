@@ -1,5 +1,5 @@
 # yunshen
-云绅测试脚本
+manager测试脚本
 
 ## selenium的css定位
 #### 一、定位遇到的问题:
